@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     stages {
         stage('Install Dependencies') {
             steps {
@@ -17,15 +17,31 @@ pipeline {
 
         stage('Generate Allure Report') {
             steps {
-                sh 'npm install -g allure-commandline'
-                sh 'allure generate allure-results --clean -o allure-report'
+                sh '''
+                    npm install -g allure-commandline
+                    export JAVA_HOME="/opt/homebrew/opt/openjdk@11"
+                    export PATH="$JAVA_HOME/bin:$PATH"
+                    allure generate allure-results --clean -o allure-report
+                '''
             }
         }
 
         stage('Publish Allure Report') {
             steps {
-                allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    properties: [],
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [path: 'allure-results']  // Ensure this path matches your actual results folder
+                ])
             }
+        }
+    }
+
+    post {
+        always {
+            // Clean up or other post-build actions if needed
         }
     }
 }
