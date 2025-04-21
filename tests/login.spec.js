@@ -3,7 +3,7 @@ import {test, expect} from '@playwright/test';
 test( "Login test on Demo Site", async({page}) => {
 
     await page.goto('https://practicetestautomation.com/practice-test-login/');
-    await page.fill('#username', 'students');
+    await page.fill('#username', 'student');
     await page.fill('#password', 'Password123');
     await page.click('#submit');
 
