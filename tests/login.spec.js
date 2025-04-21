@@ -7,6 +7,10 @@ test( "Login test on Demo Site", async({page}) => {
     await page.fill('#password', 'Password123');
     await page.click('#submit');
 
+    
+
     await expect(page).toHaveURL('https://practicetestautomation.com/logged-in-successfully/');
+
+    await console.log("Thank you");
 
 });
